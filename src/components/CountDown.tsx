@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
-import "../../styles/button.css";
-import { IQuestion } from "../../Questiongenerator";
+import "../styles/button.css";
+import { IQuestion } from "../Questiongenerator";
 
 interface CountDownProps {
   seconds: number;
@@ -45,7 +45,7 @@ const CountDown: React.FC<CountDownProps> = ({
       setCountDown((prev: number) => prev - 1);
     }, 1000);
 
-    getObject(object);
+    getObject(object); //GameInt(Parent) is calling this 'object' from its child(CountDown)
     console.log(timerId.current);
 
     console.log(isRunning);

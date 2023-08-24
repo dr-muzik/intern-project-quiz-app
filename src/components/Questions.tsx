@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { IQuestion } from "../../Questiongenerator";
+// import React, { useState } from "react";
+import { IQuestion } from "../Questiongenerator";
 
 interface QuestionProp {
   object: IQuestion;

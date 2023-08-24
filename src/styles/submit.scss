@@ -1,0 +1,38 @@
+.main {
+  .container {
+    .remark {
+      text-align: center;
+      margin-bottom: 60px;
+      & > h1 {
+        font-size: 80px;
+      }
+      & > p {
+        font-size: 40px;
+        font-style: italic;
+      }
+    }
+    .answers {
+      width: max-content;
+      margin: auto;
+
+      .question {
+        margin-bottom: 20px;
+        .correct-wrong {
+          .CA {
+            color: green;
+            font-weight: 500;
+          }
+          .ans {
+            font-style: italic;
+          }
+        }
+        .wrong {
+          .WA {
+            color: red;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+  }
+}
