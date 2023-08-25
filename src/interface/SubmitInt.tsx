@@ -1,6 +1,6 @@
 import React from "react";
 import "../styles/index.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Questiongenerator } from "../Questiongenerator";
 import { ICollation } from "../App";
 
@@ -12,8 +12,8 @@ const SubmitInt: React.FC<Result> = ({ selectedAnswers }) => {
   // const arrObj = Object.entries(selectedAnswers).map((el) =>
   //   Object.fromEntries([el])
   // );
-  // const navigate = useNavigate();
-  // navigate("/", { state: { reset: true } });
+  const navigate = useNavigate();
+  navigate("/", { state: { reset: true } });
   const playAgainHandler = () => {};
 
   selectedAnswers.sort((a, b) => {
