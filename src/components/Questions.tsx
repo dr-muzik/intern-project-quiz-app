@@ -1,16 +1,11 @@
-// import React, { useState } from "react";
+import React from "react";
 import { IQuestion } from "../Questiongenerator";
+import { ICollation } from "../App";
 
 interface QuestionProp {
   object: IQuestion;
-  selectedAnswers: {
-    [key: number]: string | null;
-  };
-  setSelectedAnswers: React.Dispatch<
-    React.SetStateAction<{
-      [key: number]: string | null;
-    }>
-  >;
+  selectedAnswers: ICollation[];
+  setSelectedAnswers: React.Dispatch<React.SetStateAction<ICollation[]>>;
 }
 
 const Questions: React.FC<QuestionProp> = ({
@@ -18,11 +13,35 @@ const Questions: React.FC<QuestionProp> = ({
   selectedAnswers,
   setSelectedAnswers,
 }) => {
-  const inputHandler = (questionId: number, selectedOption: string) => {
-    setSelectedAnswers((prevSelectedAnswers) => ({
-      ...prevSelectedAnswers,
-      [questionId]: selectedOption,
-    }));
+  console.log(selectedAnswers);
+  const inputHandler = (
+    questionId: number,
+    selectedOption: string,
+    questionAnswered: string
+  ) => {
+    const obj: ICollation = {
+      id: questionId as unknown as string,
+      Answer: selectedOption,
+      question: questionAnswered,
+    };
+
+    const updatedAnswers = [...selectedAnswers];
+
+    //Find index of existing answer for the same question
+    const existingIndex = updatedAnswers.findIndex(
+      (answer) => Number(answer.id) === questionId
+    );
+    console.log(existingIndex);
+
+    if (existingIndex !== -1) {
+      //if it exists, we update that index
+      updatedAnswers[existingIndex].Answer = selectedOption;
+    } else {
+      //if it doesn't we create a new index and add the obj to it
+      updatedAnswers.push(obj);
+    }
+
+    setSelectedAnswers(updatedAnswers);
   };
 
   return (
@@ -36,11 +55,16 @@ const Questions: React.FC<QuestionProp> = ({
               <label htmlFor={ans} key={i}>
                 <input
                   type="radio"
-                  onChange={() => inputHandler(object?.id, ans)}
+                  onChange={() =>
+                    inputHandler(object?.id, ans, object.question)
+                  }
                   name={`question_${object?.id}`}
                   value={ans}
                   id={ans}
-                  checked={selectedAnswers[object?.id] === ans}
+                  checked={selectedAnswers.some(
+                    (answer) =>
+                      Number(answer.id) === object?.id && answer.Answer === ans
+                  )}
                 />
                 {ans}
               </label>

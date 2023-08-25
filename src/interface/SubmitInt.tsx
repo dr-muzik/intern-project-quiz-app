@@ -2,20 +2,38 @@ import React from "react";
 import "../styles/index.scss";
 import { Link } from "react-router-dom";
 import { Questiongenerator } from "../Questiongenerator";
+import { ICollation } from "../App";
 
 interface Result {
-  UsersAnswers: {
-    [key: number]: string | null;
-  }; //gotten from App.txs(parent)
+  selectedAnswers: ICollation[]; //gotten from App.txs(parent)
 }
 
-const SubmitInt: React.FC<Result> = ({ UsersAnswers }) => {
-  console.log(Object.entries(UsersAnswers));
+const SubmitInt: React.FC<Result> = ({ selectedAnswers }) => {
+  // const arrObj = Object.entries(selectedAnswers).map((el) =>
+  //   Object.fromEntries([el])
+  // );
+  // const navigate = useNavigate();
+  // navigate("/", { state: { reset: true } });
+  const playAgainHandler = () => {};
+
+  selectedAnswers.sort((a, b) => {
+    const idA = parseInt(a.id);
+    const idB = parseInt(b.id);
+
+    if (idA < idB) {
+      return -1;
+    }
+    if (idA > idB) {
+      return 1;
+    }
+    return -1;
+  });
+  console.log(selectedAnswers);
   return (
     <div className="main">
       <div>
-        <Link to="/">
-          <h1>Back</h1>
+        <Link to="/" onClick={playAgainHandler}>
+          <h1>Play Again</h1>
         </Link>
       </div>
 

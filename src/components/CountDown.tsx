@@ -93,17 +93,23 @@ const CountDown: React.FC<CountDownProps> = ({
       )}
       <div>
         {!isRunning ? (
-          <button onClick={startHandler}>Start</button>
+          <button onClick={startHandler} type="button">
+            Start
+          </button>
         ) : (
-          <button onClick={resetHandler}>restart</button>
+          <button onClick={resetHandler} type="button">
+            restart
+          </button>
         )}
 
         {!check ? (
-          <button onClick={pauseHandler} disabled={!isRunning}>
+          <button onClick={pauseHandler} disabled={!isRunning} type="button">
             pause
           </button>
         ) : (
-          <button onClick={playHandler}>play</button>
+          <button onClick={playHandler} type="button">
+            play
+          </button>
         )}
       </div>
     </div>

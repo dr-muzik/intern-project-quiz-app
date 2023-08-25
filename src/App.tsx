@@ -1,18 +1,29 @@
 import "./App.css";
 import "./styles/index.scss";
+import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import GameInt from "./interface/GameInt";
 import SubmitInt from "./interface/SubmitInt";
 import MainLayout from "./layouts/MainLayout";
-import { useState } from "react";
+
+export interface ICollation {
+  id: string;
+  question: string;
+  Answer: string;
+}
 
 function App() {
-  const [usersAnswer, setUsersAnswer] = useState({});
+  const [selectedAnswers, setSelectedAnswers] = useState<ICollation[]>([]);
 
-  const getUsersAnswers = (arg: { [key: number]: string | null }) => {
-    // console.log(arg);
-    setUsersAnswer(arg);
-  };
+  // const location = useLocation();
+  // const reset = location.state && location.state.reset;
+
+  // useEffect(() => {
+  //   if (reset) {
+  //     setSelectedAnswers([]);
+  //   }
+  // }, [reset]);
+  // console.log(selectedAnswers);
 
   return (
     <Router>
@@ -20,11 +31,16 @@ function App() {
         <Route path="/" element={<MainLayout />}>
           <Route
             index
-            element={<GameInt getUsersAnswers={getUsersAnswers} />}
+            element={
+              <GameInt
+                selectedAnswers={selectedAnswers}
+                setSelectedAnswers={setSelectedAnswers}
+              />
+            }
           />
           <Route
             path="submit"
-            element={<SubmitInt UsersAnswers={usersAnswer} />}
+            element={<SubmitInt selectedAnswers={selectedAnswers} />}
           />
         </Route>
       </Routes>
