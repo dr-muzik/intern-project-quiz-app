@@ -1,37 +1,43 @@
 import React, { useEffect, useState } from "react";
 import CountDown from "../components/CountDown";
 import Questions from "../components/Questions";
-import { IQuestion, Questiongenerator } from "../Questiongenerator";
-import { Link, useLocation } from "react-router-dom";
+import { IQuestion, Quiz1, Quiz2, Quiz3 } from "../Questiongenerator";
+import { Link, useParams } from "react-router-dom";
+// import { ICollation } from "../App";
+import { useAppContext } from "../state management/StateContext";
 
-import { ICollation } from "../App";
-
-interface UserAnswer {
-  selectedAnswers: ICollation[];
-  setSelectedAnswers: React.Dispatch<React.SetStateAction<ICollation[]>>;
-  // getIndex(arg: number): void;
-}
-
-const GameInt: React.FC<UserAnswer> = ({
-  selectedAnswers,
-  setSelectedAnswers,
-}) => {
-  const [question, setQuestion] = useState<IQuestion[]>([]);
-  // const [object, setObject] = useState<IQuestion>({} as IQuestion);
+const GameInt = () => {
   const [index, setIndex] = useState<number>(0);
 
-  const location = useLocation();
-  const reset = location.state && location.state.reset;
+  //called the global state manager
+  const { selectedAnswers, updateData, object } = useAppContext();
+
+  let { quizId } = useParams();
+  // console.log(quizId);
+
+  let data: IQuestion[];
+  //switch cases
+  switch (quizId) {
+    case (quizId = "quiz-1"):
+      data = Quiz1;
+      break;
+    case (quizId = "quiz-2"):
+      data = Quiz2;
+      break;
+    case (quizId = "quiz-3"):
+      data = Quiz3;
+      break;
+
+    default:
+      data = [];
+  }
 
   useEffect(() => {
-    if (reset) {
-      setIndex(0);
-      setSelectedAnswers([]);
-    }
-  }, [reset, setSelectedAnswers]);
+    updateData(data);
+  }, [data, updateData]);
 
   const nextQuestionHandler = () => {
-    if (index < Questiongenerator.length - 1) {
+    if (index < data.length - 1) {
       setIndex(index + 1);
     }
   };
@@ -42,22 +48,16 @@ const GameInt: React.FC<UserAnswer> = ({
     }
   };
 
-  //called the question from CountDown component
-  const getObject = (arg: IQuestion[]) => {
-    setQuestion(arg);
-    // console.log(question);
-  };
+  const currentObject = object[index];
 
-  const currentObject = question[index];
-
-  const buttonCount: number = 5;
-
-  //sending this 'selectedAnswers' to App.tsx(Parent)
-  // getIndex(index);
+  const buttonCount: number = data?.length;
 
   return (
-    <React.Fragment>
-      <main>
+    <main>
+      <div className="container">
+        <div className="question-type">
+          <h1>{quizId?.toUpperCase()}</h1>
+        </div>
         <form action="" typeof="submit">
           <div className="main">
             {/* -----------top segment ------- */}
@@ -65,8 +65,8 @@ const GameInt: React.FC<UserAnswer> = ({
               <div className="left">
                 <CountDown
                   seconds={120}
-                  questions={Questiongenerator}
-                  getObject={getObject}
+                  questions={data}
+                  // getObject={getObject}
                 />
               </div>
               <div className="right">
@@ -81,11 +81,7 @@ const GameInt: React.FC<UserAnswer> = ({
             <div className="mid">
               {/* question and answers interface */}
               <div className="cont">
-                <Questions
-                  object={currentObject}
-                  selectedAnswers={selectedAnswers}
-                  setSelectedAnswers={setSelectedAnswers}
-                />
+                <Questions object={currentObject} />
               </div>
             </div>
 
@@ -98,7 +94,7 @@ const GameInt: React.FC<UserAnswer> = ({
                   <button
                     key={i}
                     style={
-                      selectedAnswers[i]
+                      selectedAnswers.some((el) => el.id === i + 1)
                         ? { backgroundColor: "green" }
                         : { backgroundColor: "white" }
                     }
@@ -110,20 +106,23 @@ const GameInt: React.FC<UserAnswer> = ({
                     {i + 1}
                   </button>
                 ))}
-
                 {/* index */}
               </div>
 
               {/* prev and next button */}
               <div className="right">
-                <button onClick={prevQuestionHandler}>Prev</button>
-                <button onClick={nextQuestionHandler}>Next</button>
+                <button type="button" onClick={prevQuestionHandler}>
+                  Prev
+                </button>
+                <button type="button" onClick={nextQuestionHandler}>
+                  Next
+                </button>
               </div>
             </div>
           </div>
         </form>
-      </main>
-    </React.Fragment>
+      </div>
+    </main>
   );
 };
 

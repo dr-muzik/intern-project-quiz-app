@@ -1,6 +1,9 @@
 @import "./gameint.scss";
 @import "./ques.scss";
 @import "./submit.scss";
+@import "./details.scss";
+@import "./login.scss";
+@import "./reg.scss";
 
 h1,
 h2,
@@ -15,4 +18,11 @@ p {
 html {
   margin: 0;
   padding: 0;
+}
+.App {
+  width: 100%;
+  max-height: 100%;
+  height: 100vh;
+  padding-bottom: 40px;
+  // background: linear-gradient(rgb(225, 0, 255), rgba(132, 209, 132, 0.568));
 }

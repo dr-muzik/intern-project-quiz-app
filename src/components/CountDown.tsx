@@ -2,11 +2,11 @@ import { useEffect, useRef, useState } from "react";
 
 import "../styles/button.css";
 import { IQuestion } from "../Questiongenerator";
+import { useAppContext } from "../state management/StateContext";
 
 interface CountDownProps {
   seconds: number;
   questions: IQuestion[];
-  getObject(arg: IQuestion[]): void;
 }
 
 /* interface Timer{
@@ -22,21 +22,18 @@ const formatTime = (time: number) => {
   return `${minutes}:${seconds}`;
 };
 
-const CountDown: React.FC<CountDownProps> = ({
-  seconds,
-  questions,
-  getObject,
-}) => {
+const CountDown: React.FC<CountDownProps> = ({ seconds, questions }) => {
   const [countDown, setCountDown] = useState<number>(seconds);
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [check, setCheck] = useState<boolean>(false);
-  const [object, setObject] = useState<IQuestion[]>([]);
+  // const [object, setObject] = useState<IQuestion[]>([]);
 
+  const { updateObject } = useAppContext();
   const timerId: any = useRef();
 
-  useEffect(() => {
-    setObject(questions);
-  }, [questions]);
+  // useEffect(() => {
+
+  // }, [questions, updateObject]);
 
   const startHandler = () => {
     setIsRunning(true);
@@ -44,8 +41,8 @@ const CountDown: React.FC<CountDownProps> = ({
     timerId.current = setInterval((): void => {
       setCountDown((prev: number) => prev - 1);
     }, 1000);
-
-    getObject(object); //GameInt(Parent) is calling this 'object' from its child(CountDown)
+    updateObject(questions);
+    // getObject(object); //GameInt(Parent) is calling this 'object' from its child(CountDown)
     console.log(timerId.current);
 
     console.log(isRunning);
@@ -87,9 +84,9 @@ const CountDown: React.FC<CountDownProps> = ({
     <div>
       Timer:
       {isRunning ? (
-        <h1>{formatTime(countDown)}</h1>
+        <h3>{formatTime(countDown)}</h3>
       ) : (
-        <h1>{countDownDefault}</h1>
+        <h3>{countDownDefault}</h3>
       )}
       <div>
         {!isRunning ? (

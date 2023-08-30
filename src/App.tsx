@@ -1,19 +1,29 @@
 import "./App.css";
+import "./../node_modules/bootstrap/scss/bootstrap.scss";
 import "./styles/index.scss";
-import { useState } from "react";
+// import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import GameInt from "./interface/GameInt";
 import SubmitInt from "./interface/SubmitInt";
 import MainLayout from "./layouts/MainLayout";
+import Details from "./components/Details";
+import Dashboard from "./dashboard/Dashboard";
+import Login from "./Pages/Login";
+import Registration from "./Pages/Registration";
+// import { IQuestion } from "./Questiongenerator";
 
 export interface ICollation {
-  id: string;
+  id: number;
   question: string;
   Answer: string;
 }
 
 function App() {
-  const [selectedAnswers, setSelectedAnswers] = useState<ICollation[]>([]);
+  // const [data, setData] = useState<IQuestion[]>([]);
+
+  // const getData = (arg: IQuestion[]) => {
+  //   setData(arg);
+  // };
 
   // const location = useLocation();
   // const reset = location.state && location.state.reset;
@@ -26,25 +36,20 @@ function App() {
   // console.log(selectedAnswers);
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<MainLayout />}>
-          <Route
-            index
-            element={
-              <GameInt
-                selectedAnswers={selectedAnswers}
-                setSelectedAnswers={setSelectedAnswers}
-              />
-            }
-          />
-          <Route
-            path="submit"
-            element={<SubmitInt selectedAnswers={selectedAnswers} />}
-          />
-        </Route>
-      </Routes>
-    </Router>
+    <div className="App">
+      <Router>
+        <Routes>
+          <Route path="/" element={<MainLayout />}>
+            <Route index element={<Login />} />
+            <Route path="signup" element={<Registration />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="gameInt/:quizId" element={<GameInt />} />
+            <Route path="submit" element={<SubmitInt />} />
+            <Route path="submit/:id" element={<Details />} />
+          </Route>
+        </Routes>
+      </Router>
+    </div>
   );
 }
 

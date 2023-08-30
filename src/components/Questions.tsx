@@ -1,26 +1,32 @@
-import React from "react";
+// import React, { useContext } from "react";
 import { IQuestion } from "../Questiongenerator";
 import { ICollation } from "../App";
+import { useAppContext } from "../state management/StateContext";
 
 interface QuestionProp {
   object: IQuestion;
-  selectedAnswers: ICollation[];
-  setSelectedAnswers: React.Dispatch<React.SetStateAction<ICollation[]>>;
+  // selectedAnswers: ICollation[];
+  // setSelectedAnswers: React.Dispatch<React.SetStateAction<ICollation[]>>;
 }
 
 const Questions: React.FC<QuestionProp> = ({
   object,
-  selectedAnswers,
-  setSelectedAnswers,
+  // selectedAnswers,
+  // setSelectedAnswers,
 }) => {
-  console.log(selectedAnswers);
+  // const {Testing} = useContext(GameContext);
+
+  // console.log(Testing)
+
+  const { selectedAnswers, updateSelectedAnswers } = useAppContext();
+  // console.log(selectedAnswers);
   const inputHandler = (
     questionId: number,
     selectedOption: string,
     questionAnswered: string
   ) => {
     const obj: ICollation = {
-      id: questionId as unknown as string,
+      id: questionId,
       Answer: selectedOption,
       question: questionAnswered,
     };
@@ -29,9 +35,9 @@ const Questions: React.FC<QuestionProp> = ({
 
     //Find index of existing answer for the same question
     const existingIndex = updatedAnswers.findIndex(
-      (answer) => Number(answer.id) === questionId
+      (answer) => answer.id === questionId
     );
-    console.log(existingIndex);
+    // console.log(existingIndex);
 
     if (existingIndex !== -1) {
       //if it exists, we update that index
@@ -41,7 +47,7 @@ const Questions: React.FC<QuestionProp> = ({
       updatedAnswers.push(obj);
     }
 
-    setSelectedAnswers(updatedAnswers);
+    updateSelectedAnswers(updatedAnswers);
   };
 
   return (
@@ -63,7 +69,7 @@ const Questions: React.FC<QuestionProp> = ({
                   id={ans}
                   checked={selectedAnswers.some(
                     (answer) =>
-                      Number(answer.id) === object?.id && answer.Answer === ans
+                      answer.id === object?.id && answer.Answer === ans
                   )}
                 />
                 {ans}
